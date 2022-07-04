@@ -1,0 +1,65 @@
+# Deprecated in newer 'docker compose' command.
+# See https://github.com/compose-spec/compose-spec/blob/master/spec.md#compose-file.
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    restart: on-failure
+    ports:
+      - '5432:5432'
+    networks:
+      - private
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+
+  backend:
+    image: user-admin-panel-backend:latest
+    restart: on-failure
+    build:
+      context: ../user-admin-panel-backend
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    networks:
+      - private
+      - public
+    environment:
+      POSTGRES_DSN: postgres://postgres:postgres@postgres:5432/postgres
+    depends_on:
+      - postgres
+
+  frontend:
+    image: user-admin-panel-frontend:latest
+    restart: on-failure
+    build:
+      context: ../user-admin-panel-frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    networks:
+      - public
+    environment:
+      BACKEND_URL: http://localhost:8080
+    depends_on:
+      - backend
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui:latest
+    restart: on-failure
+    ports:
+      - '8081:8080'
+    networks:
+      - public
+    volumes:
+      - ./openapi.yml:/usr/share/nginx/html/openapi.yml:z
+    environment:
+      API_URL: /openapi.yml
+    depends_on:
+      - backend
+
+networks:
+  private:
+  public:
