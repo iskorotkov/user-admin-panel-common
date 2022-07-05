@@ -20,7 +20,9 @@ jobs:
         distribution: 'adopt'
         
     - name: Install OpenAPI generator
-      run: wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/6.0.1/openapi-generator-cli-6.0.1.jar -O openapi-generator-cli.jar
+      run: |
+        wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/6.0.1/openapi-generator-cli-6.0.1.jar -O openapi-generator-cli.jar
+        chmod +x ./openapi-generator-cli.jar
       
     - name: Validate OpenAPI spec
       run: ./openapi-generator-cli.jar validate -i openapi.yml
