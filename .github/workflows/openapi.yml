@@ -14,4 +14,4 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Validate OpenAPI spec
-      run: docker run --rm -v ${PWD}:/local openapitools/openapi-generator-cli validate -i openapi.yml
+      run: docker run --rm -v ${PWD}:/local -w /local openapitools/openapi-generator-cli validate -i ./openapi.yml
