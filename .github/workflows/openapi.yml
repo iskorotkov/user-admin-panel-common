@@ -12,17 +12,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Setup JDK
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'adopt'
-        
-    - name: Install OpenAPI generator
-      run: |
-        wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/6.0.1/openapi-generator-cli-6.0.1.jar -O openapi-generator-cli.jar
-        chmod +x ./openapi-generator-cli.jar
-      
+
     - name: Validate OpenAPI spec
-      run: ./openapi-generator-cli.jar validate -i openapi.yml
+      run: docker run --rm -v ${PWD}:/local openapitools/openapi-generator-cli validate -i openapi.yml
