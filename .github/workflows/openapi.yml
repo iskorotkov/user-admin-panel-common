@@ -1,0 +1,17 @@
+name: OpenAPI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Validate OpenAPI spec
+      run: docker run --rm -v ${PWD}:/local -w /local openapitools/openapi-generator-cli validate -i ./openapi.yml
