@@ -16,7 +16,7 @@ services:
       POSTGRES_DB: postgres
 
   backend:
-    image: user-admin-panel-backend:latest
+    image: iskorotkov/user-admin-panel-backend:latest
     restart: on-failure
     build:
       context: ../user-admin-panel-backend
@@ -32,7 +32,7 @@ services:
       - postgres
 
   frontend:
-    image: user-admin-panel-frontend:latest
+    image: iskorotkov/user-admin-panel-frontend:latest
     restart: on-failure
     build:
       context: ../user-admin-panel-frontend
